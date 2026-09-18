@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BatchRulesPanel from './BatchRulesPanel';
 import ConflictPanel from './ConflictPanel';
 import MergeTree from './MergeTree';
 import {
@@ -7,6 +8,7 @@ import {
   type Resolution,
   type Resolutions,
 } from '../merge/threeWayMerge';
+import { applyBatchRules, type BatchRule } from '../merge/batchRules';
 import { createSnapshot, type RestoreSummary } from '../merge/snapshot';
 import { downloadText } from '../download';
 
@@ -52,6 +54,16 @@ export default function MergeStage({
   const handleDownloadSnapshot = () => {
     const snapshot = createSnapshot(mergeResult, resolutions);
     downloadText('merge-session-snapshot.json', JSON.stringify(snapshot, null, 2));
+  };
+
+  // 批量决策规则：自上而下首条命中，只处理尚未选择的冲突，绝不覆盖已有选择
+  const handleApplyBatch = (rules: BatchRule[]) => {
+    const result = applyBatchRules(rules, mergeResult.conflicts, resolutions);
+    onResolutionsChange(result.resolutions);
+    // 应用后定位到第一个仍未解决的冲突，便于继续逐项处理
+    const nextUnresolved = mergeResult.conflicts.find((c) => !result.resolutions[c.id]);
+    if (nextUnresolved) setSelectedId(nextUnresolved.id);
+    return { applied: result.applied, skippedResolved: result.skippedResolved };
   };
 
   return (
@@ -124,6 +136,14 @@ export default function MergeStage({
           />
         </div>
       </div>
+      {mergeResult.conflicts.length > 0 && (
+        <BatchRulesPanel
+          conflicts={mergeResult.conflicts}
+          resolutions={resolutions}
+          onApply={handleApplyBatch}
+          onLocateConflict={setSelectedId}
+        />
+      )}
       <div className="merge-footer">
         <button onClick={onBack}>← 返回重新输入</button>
         <button onClick={handleDownloadSnapshot}>下载会话快照</button>

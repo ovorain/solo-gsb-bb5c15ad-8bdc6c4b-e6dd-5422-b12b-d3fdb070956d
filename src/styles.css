@@ -484,6 +484,270 @@ pre {
   text-align: center;
 }
 
+/* ---------- 批量决策规则 ---------- */
+.batch-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 14px;
+  flex-shrink: 0;
+}
+
+.batch-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.batch-head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.batch-head .batch-toggle {
+  color: var(--text-dim);
+  width: 14px;
+}
+
+.batch-head .batch-hint {
+  color: var(--text-dim);
+  font-size: 12.5px;
+}
+
+.batch-body {
+  padding: 0 14px 12px;
+}
+
+.batch-syntax-hint {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  background: var(--bg-panel-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.batch-syntax-hint code,
+.overlap-rules code {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  color: var(--yellow);
+}
+
+.batch-rule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.batch-rule-row {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) 150px auto auto;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.batch-rule-row.invalid {
+  border-color: var(--red);
+}
+
+.batch-rule-order {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.batch-rule-order .order-no {
+  min-width: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.icon-btn {
+  padding: 1px 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: 5px;
+}
+
+.icon-btn.remove {
+  color: var(--text-dim);
+}
+
+.icon-btn.remove:hover:not(:disabled) {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.batch-pattern-input,
+.batch-choice-select {
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: #0b0f19;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  outline: none;
+  min-width: 0;
+}
+
+.batch-pattern-input {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+.batch-pattern-input:focus,
+.batch-choice-select:focus {
+  border-color: var(--accent);
+}
+
+.batch-choice-select {
+  cursor: pointer;
+}
+
+.batch-choice-select option {
+  background: var(--bg-panel-2);
+}
+
+.batch-hit-badge {
+  font-size: 12px;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.batch-hit-badge em {
+  color: var(--text-dim);
+  font-style: normal;
+}
+
+.batch-row-error {
+  grid-column: 1 / -1;
+  color: var(--red);
+  font-size: 12px;
+}
+
+.batch-hit-pointers {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hit-pointer {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 11.5px;
+  color: var(--yellow);
+  background: rgba(232, 179, 57, 0.1);
+  border: 1px solid rgba(232, 179, 57, 0.45);
+  border-radius: 999px;
+  padding: 1px 10px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hit-pointer:hover {
+  border-color: var(--yellow);
+}
+
+.hit-pointer.resolved {
+  color: var(--text-dim);
+  background: transparent;
+  border-color: var(--border);
+  text-decoration: line-through;
+}
+
+.batch-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.batch-blocked {
+  color: var(--red);
+  font-size: 12.5px;
+}
+
+.batch-will-apply {
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+
+.batch-will-apply strong {
+  color: var(--text);
+}
+
+.batch-result {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--green);
+  background: rgba(52, 201, 142, 0.1);
+  border: 1px solid rgba(52, 201, 142, 0.5);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.batch-result strong {
+  color: #fff;
+}
+
+.batch-overlap {
+  margin-top: 12px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: rgba(232, 179, 57, 0.07);
+}
+
+.batch-overlap .overlap-title {
+  font-size: 12.5px;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+
+.batch-overlap ul {
+  margin: 0;
+  padding-left: 4px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 150px;
+  overflow: auto;
+}
+
+.batch-overlap li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.overlap-rules {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.overlap-rules .rule-no {
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  color: var(--purple);
+  background: rgba(164, 120, 255, 0.12);
+  border-radius: 4px;
+  padding: 0 6px;
+}
+
 /* ---------- 输出阶段 ---------- */
 .schema-panel {
   background: var(--bg-panel);
