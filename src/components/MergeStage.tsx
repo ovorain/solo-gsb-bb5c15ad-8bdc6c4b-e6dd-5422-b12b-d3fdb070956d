@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ConflictPanel from './ConflictPanel';
 import MergeTree from './MergeTree';
+import BatchRulesPanel from './BatchRulesPanel';
 import {
   countConflicts,
   type MergeResult,
@@ -52,6 +53,13 @@ export default function MergeStage({
   const handleDownloadSnapshot = () => {
     const snapshot = createSnapshot(mergeResult, resolutions);
     downloadText('merge-session-snapshot.json', JSON.stringify(snapshot, null, 2));
+  };
+
+  // 批量规则应用：写入新解决方案表，并定位到下一个未解决的冲突
+  const handleBatchApply = (next: Resolutions) => {
+    onResolutionsChange(next);
+    const nextUnresolved = mergeResult.conflicts.find((c) => !next[c.id]);
+    if (nextUnresolved) setSelectedId(nextUnresolved.id);
   };
 
   return (
@@ -124,6 +132,12 @@ export default function MergeStage({
           />
         </div>
       </div>
+      <BatchRulesPanel
+        conflicts={mergeResult.conflicts}
+        resolutions={resolutions}
+        onApply={handleBatchApply}
+        onSelectConflict={setSelectedId}
+      />
       <div className="merge-footer">
         <button onClick={onBack}>← 返回重新输入</button>
         <button onClick={handleDownloadSnapshot}>下载会话快照</button>
